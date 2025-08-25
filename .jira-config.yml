@@ -1,0 +1,41 @@
+# Jira Integration Configuration
+# Update these values with your actual Jira instance details
+
+jira:
+  # Your Jira instance URL (e.g., https://yourcompany.atlassian.net)
+  url: "https://findmak.atlassian.net/jira/projects?page=1&sortKey=name&sortOrder=ASC&types=software,business"
+  
+  # Your Jira project key (e.g., SCRUM, DEV, etc.)
+  project_key: "SCRUM"
+  
+  # Jira user email for API access
+  user_email: "me@findmak.com"
+  
+  # Jira API token (generate from: https://id.atlassian.com/manage-profile/security/api-tokens)
+  api_token: "ATCTT3xFfGN0lbP-k08PCxwEkkXGESGg6gYf4xGb45zmUe04czKTsYyC3AkhyvEtMcOmFgPSEvvo_m-1jCFAOE-uOdyPCLvmkHLgZrWv-3T7JR18En_Ln_nl7GEDvjkd3QD5fR_XJ9O7pPxuLgixbV7y2C7k7N_r8CT6vA2K1kn8tENayI1nQ1c=066F08AB"
+
+# Git integration settings
+git:
+  # Enforce Jira ticket reference in commit messages
+  enforce_jira_reference: true
+  
+  # Jira ticket pattern (regex)
+  ticket_pattern: "\\b[A-Z]+-\\d+\\b"
+  
+  # Auto-transition tickets based on branch/commit patterns
+  auto_transition:
+    enabled: true
+    transitions:
+      # When code is pushed to main/master
+      deploy: "Done"
+      # When PR is created
+      review: "In Review"
+      # When development starts (new branch created)
+      start: "In Progress"
+
+# Branch naming convention
+branches:
+  # Enforce branch naming with Jira tickets
+  enforce_naming: true
+  # Pattern: feature/SCRUM-123-description, bugfix/SCRUM-456-description, etc.
+  naming_pattern: "(feature|bugfix|hotfix|chore)/[A-Z]+-\\d+-.*"

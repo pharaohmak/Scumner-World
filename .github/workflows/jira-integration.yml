@@ -1,0 +1,92 @@
+name: Jira Integration
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  pull_request_target:
+    types: [opened, closed, reopened]
+
+jobs:
+  jira-integration:
+    runs-on: ubuntu-latest
+    name: Jira Integration
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Extract Jira Issue Key
+      id: extract
+      run: |
+        # Extract Jira ticket from commit message or branch name
+        JIRA_KEY=""
+        
+        # Try to extract from commit message
+        COMMIT_MSG="${{ github.event.head_commit.message }}"
+        if [[ ! -z "$COMMIT_MSG" ]]; then
+          JIRA_KEY=$(echo "$COMMIT_MSG" | grep -oE '[A-Z]+-[0-9]+' | head -1 || true)
+        fi
+        
+        # Try to extract from branch name if not found in commit
+        if [[ -z "$JIRA_KEY" ]]; then
+          BRANCH_NAME="${{ github.head_ref }}"
+          if [[ ! -z "$BRANCH_NAME" ]]; then
+            JIRA_KEY=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+' | head -1 || true)
+          fi
+        fi
+        
+        # Try to extract from PR title
+        if [[ -z "$JIRA_KEY" ]] && [[ ! -z "${{ github.event.pull_request.title }}" ]]; then
+          JIRA_KEY=$(echo "${{ github.event.pull_request.title }}" | grep -oE '[A-Z]+-[0-9]+' | head -1 || true)
+        fi
+        
+        echo "jira_key=$JIRA_KEY" >> $GITHUB_OUTPUT
+        echo "Found Jira Key: $JIRA_KEY"
+
+    - name: Login to Jira
+      if: steps.extract.outputs.jira_key != ''
+      uses: atlassian/gajira-login@v3
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+    - name: Comment on Jira Issue
+      if: steps.extract.outputs.jira_key != ''
+      uses: atlassian/gajira-comment@v3
+      with:
+        issue: ${{ steps.extract.outputs.jira_key }}
+        comment: |
+          GitHub Action triggered:
+          - Repository: ${{ github.repository }}
+          - Branch: ${{ github.ref_name }}
+          - Commit: ${{ github.sha }}
+          - Actor: ${{ github.actor }}
+          - Event: ${{ github.event_name }}
+          
+          View details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+    - name: Transition Jira Issue (PR Opened)
+      if: steps.extract.outputs.jira_key != '' && github.event_name == 'pull_request' && github.event.action == 'opened'
+      uses: atlassian/gajira-transition@v3
+      with:
+        issue: ${{ steps.extract.outputs.jira_key }}
+        transition: "In Review"
+
+    - name: Transition Jira Issue (PR Merged)
+      if: steps.extract.outputs.jira_key != '' && github.event.pull_request.merged == true
+      uses: atlassian/gajira-transition@v3
+      with:
+        issue: ${{ steps.extract.outputs.jira_key }}
+        transition: "Done"
+
+    - name: Transition Jira Issue (Push to Main)
+      if: steps.extract.outputs.jira_key != '' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && github.event_name == 'push'
+      uses: atlassian/gajira-transition@v3
+      with:
+        issue: ${{ steps.extract.outputs.jira_key }}
+        transition: "Done"

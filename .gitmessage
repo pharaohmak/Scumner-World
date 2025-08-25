@@ -1,0 +1,26 @@
+# <type>(<scope>): <subject> [JIRA-XXX]
+#
+# <body>
+#
+# <footer>
+#
+# Type should be one of the following:
+# * feat (new feature)
+# * fix (bug fix)  
+# * docs (documentation)
+# * style (formatting, no code changes)
+# * refactor (refactoring production code)
+# * test (adding missing tests, refactoring tests)
+# * chore (updating grunt tasks etc)
+#
+# Subject should use imperative mood and not end with period
+# Body should include motivation for the change and contrast with previous behavior
+# Footer should contain any BREAKING CHANGES or reference GitHub issues
+#
+# Example:
+# feat(auth): add user authentication [SCRUM-123]
+# 
+# Implement JWT-based authentication system for user login
+# and registration functionality
+#
+# Closes SCRUM-123
