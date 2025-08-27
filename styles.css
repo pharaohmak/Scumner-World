@@ -750,8 +750,8 @@ img {
 }
 
 .popup--3 {
-  top: 100px;
-  left: 800px;
+  top: 400px;
+  left: 100px;
 }
 
 .popup--4 {
@@ -1005,6 +1005,7 @@ img {
   cursor: pointer;
   text-align: center;
   margin-top: 10px;
+  margin-bottom: var(--space-6xl);
   border-radius: var(--radius-sm);
 }
 
@@ -1117,18 +1118,24 @@ body {
 /* Large Desktops (1200px and above) */
 @media (min-width: 1200px) {
   .desktop {
-    padding: var(--space-4xl);
+    padding: var(--space-xs);
   }
 
   .icons {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-xl);
-    width: min(1000px, 35%);
+    width: 100%;
+    height: 100%;
   }
 
   .window {
     width: 700px;
     max-width: calc(100% - var(--space-6xl));
+  }
+
+  .popup--2 {
+    top: 500px;
+    right: 150px;
   }
 
   .menubar__name {
@@ -1145,28 +1152,57 @@ body {
   .icons {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-xl);
-    width: min(900px, 40%);
+    width: 100%;
+    height: 100%;
   }
 
   .window {
     width: 650px;
     max-width: calc(100% - var(--space-5xl));
   }
+
+  .popup--3 {
+    bottom: 250px;
+    right: 100px;
+  }
+
+  .popup--4 {
+    top: 700px;
+    left: 300px;
+  }
+
+  .separator {
+    display: none;
+
+  }
+
+  .tray__clock {
+    border: none;
+  }
 }
 
 /* Tablets Landscape (768px - 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .icons {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-lg);
-    width: min(600px, 50%);
+    width: 100%;
+    height: 100%;
   }
 
   .window {
     width: 90%;
-    left: 5%;
-    right: 5%;
     max-width: 600px;
+  }
+
+  .popup--3 {
+    bottom: 200px;
+    right: 50px;
+  }
+
+  .popup--4 {
+    top: 750px;
+    left: 200px;
   }
 
   .menubar__links {
@@ -1189,23 +1225,26 @@ body {
   .icon__image {
     width: var(--icon-size-md);
     height: var(--icon-size-md);
-    min-width: var(--icon-size-md);
-    min-height: var(--icon-size-md);
   }
 
   .icon__label {
     font-size: 14px;
     max-width: 100px;
   }
+
+  .separator {
+    display: none;
+  }
 }
 
 /* Tablets Portrait & Mobile Landscape (480px - 767px) */
 @media (min-width: 480px) and (max-width: 767px) {
   .icons {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-md);
     width: 100%;
     padding: var(--space-sm);
+    height: 100%;
   }
 
   .window {
@@ -1278,23 +1317,30 @@ body {
   .separator {
     display: none;
   }
+
   .icons {
     gap: var(--space-md);
     width: 100%;
     padding: var(--space-sm);
     justify-items: center;
+    height: 100%;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .window {
     width: 98%;
-    left: 1%;
+    left: 5%;
     right: 1%;
     min-width: 280px;
   }
 
+  .popup--3 {
+    bottom: 150px;
+    right: 20px;
+  }
+
   .menubar {
     padding: 0 var(--space-xs);
-    height: 35px;
   }
 
   .menubar__container {
@@ -1320,6 +1366,10 @@ body {
 
   .menubar__icons {
     display: none;
+  }
+
+  .menubar__links {
+    gap: var(--space-sm);
   }
 
   .desktop {
@@ -1396,11 +1446,6 @@ body {
   .tray__icon {
     padding: var(--space-xs);
     font-size: 11px;
-  }
-
-  /* Window adjustments for mobile */
-  .window {
-    top: 5px;
   }
 
   .titlebar {
@@ -1592,8 +1637,6 @@ body {
     font-weight: var(--font-weight-semibold);
     padding: 6px 12px;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-border-light);
   }
 }
 
@@ -1604,9 +1647,6 @@ body {
     font-weight: var(--font-weight-bold);
     padding: 8px 14px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-    border-radius: var(--radius-md);
-    border: 2px solid var(--color-border);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -1617,9 +1657,6 @@ body {
     font-weight: var(--font-weight-black);
     padding: 10px 16px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-    border-radius: var(--radius-md);
-    border: 2px solid var(--color-primary);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     color: var(--color-primary);
   }
 }
@@ -1631,66 +1668,67 @@ body {
     font-weight: var(--font-weight-semibold);
     padding: 9px 15px;
     background: rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
-    border: 1.5px solid var(--color-border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     letter-spacing: 0.5px;
   }
 }
 
 /* Surface Duo (540 x 720) */
 @media (min-width: 540px) and (max-width: 540px) and (min-height: 720px) and (max-height: 720px) {
+
   /* Fix start button */
   .taskbar__start {
     height: 36px;
     top: -5px;
-    right: 5px;
+    right: 10px;
+    width: auto;
   }
-  
-  .taskbar__start img {
-    width: 32px;
-    height: 32px;
-  }
-  
+
   /* Style clock */
   .tray__clock {
     font-size: 13px;
     font-weight: var(--font-weight-medium);
     padding: 5px 10px;
     background-color: rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-border-light);
     margin-right: 5px;
   }
-  
+
+  .taskbar__icons {
+    display: none;
+  }
+
   /* Adjust tray spacing for dual-screen optimization */
   .tray {
     gap: var(--space-xs);
     padding: 3px;
   }
+
+  .separator {
+    display: none;
+  }
 }
 
 /* Galaxy Z Fold 5 (853 x 1280) */
 @media (min-width: 853px) and (max-width: 853px) and (min-height: 1280px) and (max-height: 1280px) {
+
   /* Style menubar for foldable */
   .menubar {
     height: 45px;
     padding: 0 var(--space-lg);
   }
-  
+
   .menubar__name {
     font-size: 18px;
     margin-right: var(--space-xl);
   }
-  
+
   .menubar__link {
     font-size: 16px;
   }
-  
+
   .menubar__icon {
     width: 36px;
   }
-  
+
   /* Adjust for foldable hinge area */
   .desktop {
     padding: var(--space-xl) var(--space-lg);
@@ -1704,49 +1742,47 @@ body {
     font-weight: var(--font-weight-semibold);
     padding: 7px 13px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
-    border-radius: var(--radius-md);
-    border: 1.5px solid var(--color-border);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 }
 
 /* Nest Hub (1024 x 600) */
 @media (min-width: 1024px) and (max-width: 1024px) and (min-height: 600px) and (max-height: 600px) {
+
   /* Style icon sizes */
   .icon {
     min-width: 70px;
     min-height: 70px;
   }
-  
+
   .icon__image {
     width: 50px;
     height: 50px;
     min-width: 50px;
     min-height: 50px;
   }
-  
+
   .icon__label {
     font-size: 13px;
     max-width: 90px;
     margin-top: 0.8rem;
   }
-  
+
+  .taskbar__start {
+    right: 14px;
+  }
+
   /* Style clock for smart display */
   .tray__clock {
     font-size: 16px;
     font-weight: var(--font-weight-bold);
     padding: 8px 15px;
     background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 25px;
-    border: 2px solid var(--color-primary);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    color: var(--color-primary);
   }
-  
+
   /* Adjust desktop layout for smart display */
   .icons {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-lg);
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-sm);
     width: 100%;
     justify-items: center;
   }
@@ -1754,52 +1790,53 @@ body {
 
 /* Nest Hub Max (1280 x 800) */
 @media (min-width: 1280px) and (max-width: 1280px) and (min-height: 800px) and (max-height: 800px) {
+
   /* Style icons for larger smart display */
   .icon {
     min-width: 85px;
     min-height: 85px;
     padding: var(--space-sm);
   }
-  
+
   .icon__image {
     width: 60px;
     height: 60px;
     min-width: 60px;
     min-height: 60px;
   }
-  
+
   .icon__label {
     font-size: 14px;
     max-width: 100px;
     margin-top: 1rem;
     font-weight: var(--font-weight-medium);
   }
-  
+
   /* Enhance icon hover effects */
   .icon:hover {
     transform: translateY(-3px) scale(1.05);
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-  
+
   /* Adjust grid layout */
   .icons {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: var(--space-xl);
-    width: min(900px, 50%);
+    width: 100%;
+    height: 100%;
   }
 }
 
 /* Additional optimization for all foldable devices */
 @media (max-width: 853px) and (min-height: 1280px) {
+
   /* Ensure proper spacing around potential hinge areas */
   .desktop {
     padding: var(--space-xl);
   }
-  
-  .taskbar {
-    padding: 0 var(--space-md);
-  }
+
+
 }
 
 /* High DPI optimization for all devices */
